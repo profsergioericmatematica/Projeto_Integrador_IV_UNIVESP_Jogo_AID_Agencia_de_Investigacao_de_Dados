@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>A.I.D. - Caso 01</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilo específico para o Laboratório */
+        .maleta-virtual {
+            background: #1a1a1a;
+            border: 2px dashed #00ff41;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .disco { width: 40px; height: 40px; border-radius: 50%; }
+        .azul { background: #007bff; box-shadow: 0 0 10px #007bff; }
+        .vermelho { background: #ff4d4d; box-shadow: 0 0 10px #ff4d4d; }
+        .agente-sigma-box {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            padding: 15px;
+            color: #ffff00;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main class="dashboard">
+        <section class="intro-missao">
+            <h2>Caso 01: O Enigma do Cofre Digital</h2>
+            <p>Habilidade BNCC: EF09MA20 - Analisar eventos dependentes e independentes.</p>
+        </section>
+
+        <div id="game-container">
+            <div class="agente-sigma-box" id="agente-sigma">
+                <strong>AGENTE SIGMA:</strong> Olá! Sou o Sigma. Vamos investigar as chances desse cofre?
+            </div>
+
+            <div class="maleta-virtual" id="maleta">
+                </div>
+
+            <div id="pergunta-container" style="text-align: center; margin-top: 30px;">
+                <p id="enunciado">Aguardando início da investigação...</p>
+                <div id="opcoes">
+                    <button onclick="iniciarJogo()">Iniciar Simulação</button>
+                </div>
+            </div>
+        </div>
+
+<div style="text-align: center; margin-bottom: 15px;">
+    <button onclick="mostrarDica()" style="border: 2px solid #00ffff; color: #00ffff; background: rgba(0, 255, 255, 0.1); font-size: 1rem; padding: 12px 24px; cursor: pointer; transition: 0.3s;">
+        🔍 CONSULTAR BASE DE DADOS (TEORIA)
+    </button>
+</div>
+
+<div id="box-dica" style="display:none; background: #001a1a; border: 1px solid #00ffff; padding: 20px; font-size: 1rem; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);">
+    <h4 style="color: #00ffff; margin-top: 0; border-bottom: 1px solid #00ffff; padding-bottom: 10px;">📂 Manual do Investigador:</h4>
+    
+    <div style="margin-bottom: 15px;">
+        <p style="color: #00ff41; margin-bottom: 5px;"><strong>Evento Independente (Com Reposição):</strong></p>
+        <p>O total de discos na maleta <strong>não muda</strong>.</p>
+        <div style="font-family: 'Fira Code', monospace; font-size: 1.2rem; background: rgba(0,0,0,0.5); padding: 10px; display: inline-block;">
+            P = <span class="fracao"><span class="numerador">favoráveis</span><span class="denominador">n</span></span>
+        </div>
+        <p style="font-size: 0.8rem; opacity: 0.8;">* onde <em>n</em> é o total de elementos.</p>
+    </div>
+
+    <div>
+        <p style="color: #ff4d4d; margin-bottom: 5px;"><strong>Evento Dependente (Sem Reposição):</strong></p>
+        <p>O disco é retirado e <strong>o total diminui</strong>.</p>
+        <div style="font-family: 'Fira Code', monospace; font-size: 1.2rem; background: rgba(0,0,0,0.5); padding: 10px; display: inline-block;">
+            P = <span class="fracao"><span class="numerador">favoráveis</span><span class="denominador">n - 1</span></span>
+        </div>
+        <p style="font-size: 0.8rem; opacity: 0.8;">* onde <em>n-1</em> representa o novo total reduzido.</p>
+    </div>
+</div>
+<div id="resultado-final" style="display:none; text-align:center;">
+    <h3 style="color:#00ff41; text-shadow: 0 0 10px #00ff41;">CASO 01 CONCLUÍDO</h3>
+    
+    <div id="stats" style="margin-bottom: 30px;"></div>
+    
+    <button onclick="window.location.href='caso2.html'" style="font-size: 1.2rem; padding: 15px 40px; border-color: #ffff00; color: #ffff00;">
+        PRÓXIMA MISSÃO: CASO 02 >>
+    </button>
+</div>
+    </main>
+
+    <script src="componentes.js"></script>
+    <script src="script.js"></script>
+    <script src="caso1.js"></script>
+</body>
+</html>

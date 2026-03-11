@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.I.D. - Caso 03: Painel de Controle</title>
+    <link rel="stylesheet" href="style.css">
+<style>
+    /* --- Layout do Caso 03 --- */
+    .painel-conexao {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-top: 30px;
+        padding: 20px;
+        min-height: 350px; /* Altura mínima reduzida levemente */
+    }
+
+    /* Colunas */
+    .coluna-dados, .coluna-graficos {
+        display: flex;
+        flex-direction: column;
+        gap: 30px; /* Espaçamento entre cartões reduzido para ficar mais compacto */
+        width: 40%;
+        z-index: 2;
+    }
+
+    /* Cartões Genéricos */
+    .card-item {
+        background: #001a00;
+        border: 2px solid #00ff41;
+        padding: 15px 20px; /* Padding vertical reduzido */
+        border-radius: 8px;
+        position: relative;
+        cursor: pointer;
+        transition: 0.3s;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        min-height: 60px; /* Garante altura mínima uniforme */
+    }
+
+    .card-item:hover {
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+        background: rgba(0, 255, 65, 0.1);
+    }
+
+    /* Cartão da Esquerda (Dados) */
+    .card-dado {
+        justify-content: flex-start;
+        padding-right: 30px;
+    }
+
+    /* Cartão da Direita (Gráficos) - COM AJUSTE DE PROPORÇÃO */
+    .card-grafico {
+        justify-content: center;
+        border-color: #ffff00;
+        color: #ffff00;
+        flex-direction: column; /* Ícone em cima do texto */
+        gap: 5px; /* ESPAÇAMENTO REDUZIDO (era 10px) */
+        padding-left: 30px;
+    }
+
+    /* Estilo para o container do ícone SVG - COM AJUSTE DE TAMANHO */
+    .icone-container svg {
+        width: 40px;   /* TAMANHO REDUZIDO (era 60px) */
+        height: 40px;  /* TAMANHO REDUZIDO (era 60px) */
+        fill: none;
+        display: block;
+        filter: drop-shadow(0 0 3px rgba(255, 255, 0, 0.7)); /* Brilho ajustado */
+        margin-top: 5px;
+    }
+    
+    /* Texto do cartão gráfico */
+    .card-grafico span {
+        font-size: 0.9rem;
+    }
+
+    /* Pontos de Conexão (Bolinhas) */
+    .ponto-conexao {
+        width: 12px; /* Bolinhas levemente menores */
+        height: 12px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        box-shadow: 0 0 5px #fff;
+    }
+    
+    .ponto-dir { right: -6px; background: #00ff41; }
+    .ponto-esq { left: -6px; background: #ffff00; }
+
+    /* Camada de Linhas (SVG) */
+    #svg-layer {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 1; pointer-events: none;
+    }
+
+    line {
+        stroke-width: 3;
+        stroke-linecap: round;
+    }
+
+    /* Estados */
+    .bloqueado { opacity: 0.5; pointer-events: none; border-color: #555; filter: grayscale(0.5); }
+    .erro-temp { border-color: #ff4d4d; animation: tremer 0.3s; }
+
+    @keyframes tremer {
+        0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 100% { transform: translateX(0); }
+    }
+
+    /* Dica e Tabelas */
+    .dica-box { background: #001a1a; border: 1px dashed #00ffff; padding: 15px; margin-top: 15px; color: #00ffff; display: none; font-size: 0.9rem; }
+    .tabela-relatorio { margin-top: 20px; width: 100%; border-collapse: collapse; color: #fff; font-size: 0.9rem; }
+    .tabela-relatorio th, .tabela-relatorio td { border: 1px solid #333; padding: 8px; text-align: left; }
+    .tabela-relatorio th { background: rgba(0, 255, 65, 0.1); color: #00ff41; }
+</style>
+</head>
+<body>
+
+    <main class="dashboard">
+        <section class="intro-missao">
+            <h2>Caso 03: O Painel Desconfigurado</h2>
+            <p>Habilidade: Escolha de Gráficos (EF09MA22)</p>
+        </section>
+
+        <div id="game-container">
+            <div class="agente-sigma-box" id="agente-sigma">
+                <strong>AGENTE SIGMA:</strong> O sistema perdeu a formatação. Ligue cada conjunto de dados ao gráfico ideal para visualizá-lo.
+                <br><small>(Clique e segure na bolinha verde, arraste até a bolinha amarela correspondente)</small>
+            </div>
+
+            <div style="text-align: right; margin-top: 10px;">
+                <button onclick="mostrarDica()" style="font-size: 0.8rem; border-color: #00ffff; color: #00ffff;">💡 PEDIR DICA TÁTICA</button>
+            </div>
+            
+            <div id="box-dica" class="dica-box"></div>
+
+            <div class="painel-conexao" id="area-jogo">
+                <svg id="svg-layer"></svg>
+
+                <div class="coluna-dados" id="lista-dados">
+                    </div>
+
+                <div class="coluna-graficos" id="lista-graficos">
+                    </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; display: none;" id="btn-proximo-container">
+                <button onclick="finalizarCaso()" style="font-size: 1.2rem; padding: 15px 40px; background: #00ff41; color: #000; border: none; font-weight:bold;">
+                    RELATÓRIO FINAL >>
+                </button>
+            </div>
+        </div>
+
+        <div id="resultado-final" style="display:none;">
+            <h3>SISTEMA RECONFIGURADO</h3>
+            <p>Confira o registro das conexões incorretas:</p>
+            
+            <div id="tabela-erros-container"></div>
+<button onclick="window.location.href='caso4.html'" 
+        style="margin-top: 30px; font-size: 1.1rem; border: 2px solid #ffff00; color: #ffff00;">
+    INICIAR MISSÃO FINAL (CASO 04) >>
+</button>
+        </div>
+    </main>
+
+    <script src="componentes.js"></script>
+    <script src="script.js"></script>
+    <script src="caso3.js"></script>
+</body>
+</html>

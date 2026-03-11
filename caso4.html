@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.I.D. - Caso 04: A Pesquisa Final</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos do Caso 04 */
+        .planilha-container {
+            background: #fff; color: #000; padding: 5px; border-radius: 4px;
+            font-family: Arial, sans-serif; margin: 20px 0; overflow-x: auto;
+        }
+        table.planilha { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        table.planilha th { background: #e0e0e0; border: 1px solid #999; padding: 8px; }
+        table.planilha td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        table.planilha tr:nth-child(even) { background: #f9f9f9; }
+        
+        .painel-tarefa {
+            background: rgba(0, 50, 0, 0.8); border-left: 4px solid #00ff41;
+            padding: 20px; margin-bottom: 20px;
+        }
+        .input-calculo {
+            background: #000; border: 1px solid #00ff41; color: #00ff41;
+            padding: 10px; font-size: 1.1rem; width: 100px; text-align: center;
+            font-family: 'Fira Code', monospace;
+        }
+        .btn-acao {
+            background: #003300; border: 1px solid #00ff41; color: #fff;
+            padding: 10px 20px; margin: 5px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-acao:hover { background: #00ff41; color: #000; }
+        
+        /* Botão Dica e Dados Visíveis */
+        .btn-dica {
+            font-size: 0.8rem; border: 1px solid #00ffff; color: #00ffff;
+            background: rgba(0, 255, 255, 0.1); float: right; cursor: pointer; margin-bottom: 10px;
+        }
+        .box-dica {
+            clear: both; background: #001a1a; border: 1px dashed #00ffff;
+            padding: 10px; color: #00ffff; display: none; margin-bottom: 15px; font-size: 0.9rem;
+        }
+        .dados-visiveis {
+            background: #111; color: #ffff00; padding: 15px; text-align: center;
+            font-size: 1.2rem; border: 1px dashed #ffff00; margin: 20px 0; letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="dashboard">
+        <section class="intro-missao">
+            <h2>Caso 04: A Pesquisa de Campo</h2>
+            <p>Habilidade: Pesquisa Amostral e Medidas (EF09MA23)</p>
+        </section>
+
+        <div id="game-container">
+            <div class="agente-sigma-box" id="agente-sigma">
+                <strong>AGENTE SIGMA:</strong> Precisamos compilar um relatório estatístico sobre <span id="tema-missao" style="color:#ffff00">DADOS</span>. Siga as etapas.
+            </div>
+
+            <div id="fase-1" class="fase-jogo">
+                <div class="painel-tarefa">
+                    <button class="btn-dica" onclick="mostrarDica(1)">💡 DICA TÁTICA</button>
+                    <div id="dica-1" class="box-dica">Para um relatório ser aceito cientificamente, a escolha das pessoas não pode ser viciada (apenas amigos). Ela precisa representar o todo.</div>
+                    
+                    <h3>ETAPA 1: PLANEJAMENTO AMOSTRAL</h3>
+                    <p>A cidade tem 50.000 habitantes. Não temos tempo para entrevistar todos. Qual a melhor estratégia?</p>
+                    <div style="margin-top:20px;">
+                        <button class="btn-acao" onclick="verificarAmostra('A')">A) Entrevistar apenas os meus 5 melhores amigos.</button>
+                        <button class="btn-acao" onclick="verificarAmostra('B')">B) Sortear aleatoriamente 200 pessoas de bairros diferentes.</button>
+                        <button class="btn-acao" onclick="verificarAmostra('C')">C) Entrevistar apenas quem frequenta o shopping.</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fase-2" class="fase-jogo" style="display:none;">
+                <div class="painel-tarefa">
+                    <button class="btn-dica" onclick="mostrarDica(2)">💡 DICA DE CÁLCULO</button>
+                    <div id="dica-2" class="box-dica">
+                        <strong>Amplitude:</strong> Subtraia o MENOR valor da tabela do MAIOR valor.<br>
+                        <strong>Média:</strong> Some todos os valores da lista e divida pela quantidade total de entrevistados (5).
+                    </div>
+
+                    <h3>ETAPA 2: PROCESSAMENTO DE DADOS</h3>
+                    <p>Recebemos os dados brutos da amostra piloto sobre <strong><span id="titulo-tema">...</span></strong>. Calcule as métricas:</p>
+                    
+                    <div class="planilha-container">
+                        <table class="planilha">
+                            <thead>
+                                <tr><th>ID</th><th>NOME</th><th id="unidade-medida">VALOR</th></tr>
+                            </thead>
+                            <tbody id="corpo-tabela">
+                                </tbody>
+                        </table>
+                    </div>
+
+                    <div style="display: flex; gap: 20px; justify-content: space-around; margin-top: 20px; flex-wrap: wrap;">
+                        <div>
+                            <p>1. <strong>AMPLITUDE</strong> (Máximo - Mínimo):</p>
+                            <input type="number" id="input-amplitude" class="input-calculo" placeholder="?">
+                        </div>
+                        <div>
+                            <p>2. <strong>MÉDIA</strong> (Soma ÷ Total):</p>
+                            <input type="number" id="input-media" class="input-calculo" placeholder="?">
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-acao" onclick="verificarFase2()">PROCESSAR DADOS >></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fase-3" class="fase-jogo" style="display:none;">
+                <div class="painel-tarefa">
+                    <button class="btn-dica" onclick="mostrarDica(3)">💡 DICA TÁTICA</button>
+                    <div id="dica-3" class="box-dica">A Moda é o valor que está "na moda", ou seja, o número que se repete mais vezes na lista de dados.</div>
+
+                    <h3>ETAPA 3: PADRÃO DE COMPORTAMENTO</h3>
+                    <p>Precisamos identificar o comportamento mais comum para o relatório.</p>
+                    
+                    <div class="dados-visiveis" id="dados-visiveis-f3">...</div>
+
+                    <p>Qual é a <strong>MODA</strong> desta sequência?</p>
+                    
+                    <div style="text-align: center;">
+                        <input type="number" id="input-moda" class="input-calculo" placeholder="?">
+                        <br><br>
+                        <button class="btn-acao" onclick="verificarModa()">CONFIRMAR MODA >></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fase-4" class="fase-jogo" style="display:none;">
+                <div class="painel-tarefa">
+                    <button class="btn-dica" onclick="mostrarDica(4)">💡 DICA DE ANÁLISE</button>
+                    <div id="dica-4" class="box-dica">
+                        1. Organize os números em ordem crescente (do menor para o maior).<br>
+                        2. O valor que estiver exatamente no centro da fila é a Mediana.
+                    </div>
+
+                    <h3>ETAPA 4: ANÁLISE DE CENTRALIDADE</h3>
+                    <p><strong>ALERTA DE OUTLIER:</strong> Note que um dos valores é muito diferente dos outros (exagero). Isso distorce a média. Precisamos de um valor central mais justo.</p>
+                    
+                    <div class="dados-visiveis" id="dados-visiveis-f4">...</div>
+
+                    <p>Calcule a <strong>MEDIANA</strong> destes dados:</p>
+                    
+                    <div style="text-align: center;">
+                        <input type="number" id="input-mediana" class="input-calculo" placeholder="?">
+                        <br><br>
+                        <button class="btn-acao" onclick="verificarMediana()">FINALIZAR RELATÓRIO >></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="resultado-final" style="display:none; text-align:center;">
+            <h3 style="color:#00ff41;">PESQUISA CONCLUÍDA</h3>
+            <p>Dados validados e processados com sucesso.</p>
+            
+            <div id="stats-caso4" style="margin: 20px 0; border: 1px solid #00ff41; padding: 15px; font-size: 1.2rem;"></div>
+
+            <button onclick="window.location.href='final.html'" 
+                    style="font-size: 1.2rem; padding: 15px 40px; border: 2px solid #ffff00; color: #ffff00; background: rgba(255,255,0,0.1);">
+                📂 ABRIR DOSSIÊ FINAL E GERAR TXT >>
+            </button>
+        </div>
+    </main>
+
+    <script src="componentes.js"></script>
+    <script src="script.js"></script>
+    <script src="caso4.js"></script>
+</body>
+</html>

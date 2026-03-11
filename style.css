@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
+/* Configurações Globais */
+html, body {
+    background-color: #0a0a0a !important;
+    color: #00ff41 !important;
+    font-family: 'Fira Code', monospace;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho Injetado pelo JS */
+.header-agencia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #00ff41;
+    padding: 10px 20px;
+    background-color: #0a0a0a;
+}
+
+.header-agencia h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    text-shadow: 0 0 5px #00ff41;
+}
+
+.input-agente input {
+    background: #1a1a1a;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 5px;
+    font-family: 'Fira Code', monospace;
+}
+
+/* Conteúdo Principal */
+.dashboard {
+    flex: 1;
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.intro-missao {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.intro-missao h2 {
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px #00ff41;
+}
+
+/* Cards Empilhados */
+.menu-missoes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card-missao {
+    background: rgba(0, 255, 65, 0.05);
+    border: 1px solid #00ff41;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.card-missao:hover {
+    background: rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+}
+
+.card-info h3 { margin: 0; color: #fff; }
+.card-info p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.8; }
+
+/* Botões */
+button {
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Fira Code', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background: #00ff41;
+    color: #000;
+}
+
+/* Rodapé Injetado */
+.terminal-footer {
+    padding: 20px;
+    font-size: 0.7rem;
+    text-align: center;
+    border-top: 1px solid rgba(0, 255, 65, 0.3);
+    line-height: 1.5;
+}
+/* Efeito exclusivo para o campo do Agente */
+.input-destaque {
+    color: #ffff00 !important; /* Amarelo */
+    font-weight: bold !important;
+    text-shadow: 0 0 10px #ffff00;
+    animation: blinker-agente 1.2s linear infinite;
+}
+
+
+/* Nova cor de destaque para alertas/instruções */
+.texto-alerta {
+    color: #ffff00 !important; /* Amarelo Puro */
+    font-weight: bold;
+    text-shadow: 0 0 10px #ffff00;
+    animation: blinker-alerta 1s linear infinite;
+}
+
+/* Animação específica para o texto amarelo */
+@keyframes blinker-alerta {
+    50% { opacity: 0.4; }
+}
+
+/* Estilo para o "Digite seu nome aqui!" (Placeholder) */
+#nome-agente::placeholder {
+    color: #ffff00 !important;
+    font-weight: bold !important;
+    opacity: 1; /* Garante que a cor não fique esmaecida */
+    animation: blinker-agente 1.2s linear infinite;
+}
+/* A animação de piscar compartilhada */
+@keyframes blinker-agente {
+    0% { opacity: 1; }
+    50% { opacity: 0.1; }
+    100% { opacity: 1; }
+}
+/* Estilo para o texto que o usuário digita */
+.input-destaque {
+    color: #ffff00 !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 10px #ffff00;
+    animation: blinker-agente 1.2s linear infinite;
+}
+
+#linha-antes, #linha-depois {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0;
+    font-size: 0.8rem;
+    color: #00ff41;
+}
+
+/* Estilo para frações matemáticas */
+.fracao {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.numerador {
+    border-bottom: 2px solid #00ff41; /* Traço verde neon */
+    padding: 0 2px;
+}
+
+.denominador {
+    padding: 0 2px;
+}
+
+/* Ajuste nos botões para comportar a fração */
+#opcoes button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px; /* Aumenta a altura para a fração caber bem */
+    margin: 5px;
+}
+
+/* Container das maletas para permitir o empilhamento vertical */
+.maleta-virtual {
+    display: flex;
+    flex-direction: column; /* Empilha as linhas */
+    gap: 15px;
+    padding: 20px;
+    background: #1a1a1a;
+    border: 1px solid #00ff41;
+}
+
+.linha-container {
+    display: flex;
+    align-items: center; /* Alinha o texto e os discos horizontalmente */
+    width: 100%;
+}
+
+.label-cenario {
+    min-width: 120px; /* Largura fixa para o texto para alinhar o início das maletas */
+    font-size: 0.75rem;
+    color: #00ff41;
+    font-weight: bold;
+    text-align: left;
+}
+
+.linha-discos {
+    display: flex;
+    gap: 8px; /* Espaço entre cada disco */
+}
+
+
+/* Estilo para quando o input está bloqueado (fora da home) */
+.input-bloqueado {
+    background: rgba(0, 255, 65, 0.05) !important; /* Fundo mais escuro */
+    border-color: #008031 !important; /* Verde mais fosco */
+    color: #00ff41 !important; /* Mantém o verde para leitura */
+    cursor: not-allowed; /* Mostra o ícone de 'proibido' ao passar o mouse */
+    animation: none !important; /* Remove o piscar para não distrair durante o jogo */
+    text-shadow: none !important;
+}
+
+/* Opcional: remover a borda de foco ao clicar no campo bloqueado */
+.input-bloqueado:focus {
+    outline: none;
+    border-color: #008031 !important;
+}
+
+/* Estilização do Novo Rodapé */
+.terminal-footer {
+    padding: 30px 20px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-top: 1px solid #00ff41;
+    color: #00ff41;
+    text-align: center;
+    font-size: 0.75rem;
+    margin-top: auto; /* Mantém no final da página */
+}
+
+.footer-content p {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.github-area {
+    margin: 15px 0;
+}
+
+.btn-github {
+    display: inline-block;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 8px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-github:hover {
+    background: #00ff41;
+    color: #000;
+    box-shadow: 0 0 10px #00ff41;
+}
+
+.autores {
+    opacity: 0.8;
+    max-width: 800px;
+    margin: 15px auto !important;
+    font-size: 0.7rem;
+}
+
+.licenca {
+    font-style: italic;
+    border-top: 1px solid rgba(0, 255, 65, 0.2);
+    padding-top: 10px;
+}
+
+.status-blink { animation: blink 2s infinite; }
+@keyframes blink { 50% { opacity: 0.3; } }

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.I.D. - Agência de Investigação de Dados</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .btn-start-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 40vh;
+            gap: 20px;
+        }
+
+        .btn-jogar {
+            background: transparent;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            padding: 20px 60px;
+            font-size: 2rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .btn-jogar:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 40px #00ff41;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 255, 65, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+        }
+
+        .secao-tutorial {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="dashboard">
+        <section class="intro-missao">
+            <h2>BEM-VINDO À AGÊNCIA</h2>
+            <p>Sua missão: Investigar fraudes estatísticas e resolver enigmas matemáticos.</p>
+            <p style="color: #ffff00;">Identifique-se acima para começar a jornada.</p>
+        </section>
+
+        <div class="btn-start-container">
+            <button onclick="iniciarJornada()" class="btn-jogar">
+                ▶ INICIAR INVESTIGAÇÃO
+            </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="abrirModal()" style="border-color: #ffff00; color: #ffff00; font-size: 0.9rem;">
+                📖 MANUAL DE OPERAÇÕES (COMO JOGAR)
+            </button>
+        </div>
+    </main>
+
+    <div id="modal-instrucoes" class="modal-instrucoes" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.95); overflow-y:auto;">
+        <div style="background:#0a0a0a; margin:2% auto; padding:40px; border:2px solid #ffff00; width:85%; max-width:900px; color:#00ff41; box-shadow: 0 0 20px #ffff00;">
+            <span onclick="fecharModal()" style="float:right; cursor:pointer; color:#ff4d4d; font-size:2rem; font-weight:bold;">&times;</span>
+            
+            <h2 style="color:#ffff00; text-align:center; margin-bottom: 30px;">PROTOCOLO DA AGÊNCIA</h2>
+
+            <div class="secao-tutorial">
+                <h3 style="color:#00ff41;">🔵 CASO 01: O ENIGMA DO COFRE (Probabilidade)</h3>
+                <p><strong>Objetivo:</strong> Calcular a chance de retirar discos coloridos de uma maleta.</p>
+            </div>
+
+            <div class="secao-tutorial">
+                <h3 style="color:#00ff41;">🔴 CASO 02: A FRAUDE MIDIÁTICA (Análise de Gráficos)</h3>
+                <p><strong>Objetivo:</strong> Identificar qual gráfico está manipulando a verdade.</p>
+            </div>
+            
+            <div class="secao-tutorial">
+                <h3 style="color:#00ff41;">🟢 CASO 03: PAINEL DE CONTROLE (Tipos de Gráficos)</h3>
+                <p><strong>Objetivo:</strong> Escolher o gráfico correto (Linha, Coluna, Setores) para cada tipo de dado.</p>
+            </div>
+
+            <div class="secao-tutorial">
+                <h3 style="color:#00ff41;">🟡 CASO 04: PESQUISA DE CAMPO (Estatística)</h3>
+                <p><strong>Objetivo:</strong> Calcular Média, Moda, Mediana e Amplitude de uma pesquisa amostral.</p>
+            </div>
+
+            <p style="text-align:center; color:#ffff00; font-weight:bold; margin-top:20px;">
+                Boa sorte, Agente. A verdade está nos dados.
+            </p>
+        </div>
+    </div>
+
+    <script src="componentes.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+        function iniciarJornada() {
+            const nome = document.getElementById('nome-agente').value;
+            
+            if (!nome || nome.trim() === "") {
+                alert("ACESSO NEGADO: Identifique-se no campo 'Agente' no topo da tela.");
+                const input = document.getElementById('nome-agente');
+                input.focus();
+                input.classList.add('input-destaque'); 
+            } else {
+                // --- COMANDO DE LIMPEZA GERAL ---
+                // Isso garante que o próximo jogo comece sem dados antigos
+                localStorage.removeItem('relatorioGeral');
+                
+                // Salva o novo agente e inicia
+                localStorage.setItem('nomeAgente', nome);
+                window.location.href = 'caso1.html';
+            }
+        }
+
+        function abrirModal() { document.getElementById('modal-instrucoes').style.display = 'block'; }
+        function fecharModal() { document.getElementById('modal-instrucoes').style.display = 'none'; }
+        window.onclick = function(event) {
+            let modal = document.getElementById('modal-instrucoes');
+            if (event.target == modal) fecharModal();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.I.D. - Caso 02: A Fraude Midiática</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* --- Estilos Simplificados do Caso 02 --- */
+        .painel-editor { display: flex; flex-direction: column; gap: 15px; }
+
+        .painel-decisao-central {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ffff00;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.1);
+        }
+
+        .titulo-decisao { color: #ffff00; font-size: 1.2rem; margin-bottom: 15px; text-transform: uppercase; font-weight: bold; }
+
+        .botoes-centrais { display: flex; justify-content: center; gap: 30px; }
+
+        .btn-fraude {
+            padding: 15px 40px; font-size: 1.1rem; background: transparent; border: 2px solid #ff4d4d;
+            color: #ff4d4d; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-weight: bold;
+        }
+        .btn-fraude:hover { background: #ff4d4d; color: #000; box-shadow: 0 0 15px #ff4d4d; transform: scale(1.05); }
+
+        .manchete-ficticia {
+            background: #fff; color: #000; padding: 15px; font-family: 'Impact', sans-serif;
+            text-transform: uppercase; font-size: 1.6rem; text-align: center; transform: rotate(-0.5deg);
+            box-shadow: 4px 4px 0px #ff0000; border: 2px solid #000; margin-bottom: 10px;
+        }
+
+        .area-comparacao { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+
+        .monitor-grafico {
+            flex: 1; min-width: 300px; background: #0a0a0a; border: 2px solid #333;
+            border-radius: 8px; padding: 15px; position: relative; transition: all 0.3s;
+        }
+
+        .label-monitor {
+            background: #333; color: #fff; padding: 2px 10px; border-radius: 4px;
+            display: inline-block; margin-bottom: 10px; font-size: 0.9rem; font-weight: bold;
+        }
+
+        .canvas-container { background: #fff; height: 250px; border-radius: 4px; padding: 10px; }
+
+        .monitor-grafico.confirmado-fraude { border-color: #ff4d4d; box-shadow: 0 0 30px rgba(255, 77, 77, 0.4); }
+        .monitor-grafico.confirmado-honesto { border-color: #00ff41; box-shadow: 0 0 30px rgba(0, 255, 65, 0.4); opacity: 0.6; }
+
+        .selo-resultado {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 2rem; font-weight: bold; border: 5px solid; padding: 15px 30px;
+            text-transform: uppercase; background: rgba(0,0,0,0.9); z-index: 10; display: none; white-space: nowrap;
+        }
+
+        /* Painel Protocolo (Dica) */
+        .painel-protocolo {
+            background: rgba(0, 50, 0, 0.5); border-left: 4px solid #00ff41;
+            padding: 15px; margin-bottom: 20px; color: #fff; display: none; /* Começa Oculto */
+        }
+
+        /* --- ESTILOS DO RELATÓRIO FINAL --- */
+        .tabela-relatorio { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85rem; color: #fff; border: 1px solid #333; }
+        .tabela-relatorio th { border-bottom: 2px solid #00ff41; text-align: left; padding: 12px; color: #00ff41; background: rgba(0, 255, 65, 0.1); }
+        .tabela-relatorio td { border-bottom: 1px solid #333; padding: 12px; }
+        .rank-box { font-size: 1.5rem; color: #ffff00; text-align: center; margin: 20px 0; border: 2px solid #ffff00; padding: 15px; text-transform: uppercase; letter-spacing: 2px; background: rgba(255, 255, 0, 0.05); }
+    </style>
+</head>
+<body>
+
+    <main class="dashboard">
+        <section class="intro-missao">
+            <h2>Caso 02: A Fraude Midiática</h2>
+            <p>Habilidade: Análise Crítica de Gráficos (EF09MA21)</p>
+        </section>
+
+        <div id="game-container">
+            <div style="text-align: right; margin-bottom: 10px;">
+                <button onclick="mostrarDica()" id="btn-dica" style="font-size: 0.9rem; border-color: #00ffff; color: #00ffff; background: rgba(0, 255, 255, 0.1);">
+                    💡 CONSULTAR DICA TÁTICA
+                </button>
+            </div>
+
+            <div class="painel-protocolo" id="painel-protocolo">
+                <strong style="color:#00ff41;">PROTOCOLO DA MISSÃO:</strong>
+                <span id="texto-protocolo">Carregando instrução...</span>
+            </div>
+
+            <div class="painel-editor">
+                <div class="manchete-ficticia" id="manchete-texto">CARREGANDO...</div>
+
+                <div class="area-comparacao">
+                    <div class="monitor-grafico" id="monitor-A">
+                        <div class="label-monitor">GRÁFICO A</div>
+                        <div class="canvas-container"><canvas id="chartA"></canvas></div>
+                        <div class="selo-resultado" id="selo-A"></div>
+                    </div>
+
+                    <div class="monitor-grafico" id="monitor-B">
+                        <div class="label-monitor">GRÁFICO B</div>
+                        <div class="canvas-container"><canvas id="chartB"></canvas></div>
+                        <div class="selo-resultado" id="selo-B"></div>
+                    </div>
+                </div>
+
+                <div class="painel-decisao-central" id="painel-botoes">
+                    <div class="titulo-decisao">QUAL É O GRÁFICO FRAUDULENTO?</div>
+                    <div class="botoes-centrais">
+                        <button class="btn-fraude" onclick="verificarFraude('A')">É O GRÁFICO A 🚫</button>
+                        <button class="btn-fraude" onclick="verificarFraude('B')">É O GRÁFICO B 🚫</button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px; display: none;" id="btn-proximo-container">
+                    <div id="feedback-texto" style="margin-bottom:15px; font-size:1.1rem;"></div>
+                    <button onclick="proximaQuestao()" style="font-size: 1.1rem; padding: 15px 30px; background: #00ff41; color: #000; border: none; font-weight:bold; cursor:pointer;">
+                        PRÓXIMA ANÁLISE >>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultado-final" style="display:none; text-align:center;">
+            <h3 style="color:#00ff41;">DOSSIÊ DE DESEMPENHO: CASO 02</h3>
+            
+            <div id="rank-final" class="rank-box">AGENTE EM TREINAMENTO</div>
+
+            <div style="display: flex; justify-content: space-around; margin-bottom: 30px; background: #111; padding: 15px; border-radius: 8px;">
+                <div style="text-align:center;">
+                    <p style="color:#aaa; margin:0 0 5px 0;">PRECISÃO</p>
+                    <span id="score-final" style="font-size:1.8rem; color:#00ff41; font-weight:bold;">0/0</span>
+                </div>
+                <div style="text-align:center;">
+                    <p style="color:#aaa; margin:0 0 5px 0;">DICAS USADAS</p>
+                    <span id="dicas-final" style="font-size:1.8rem; color:#ffff00; font-weight:bold;">0</span>
+                </div>
+            </div>
+
+            <h4 style="color:#00ff41; border-bottom:1px solid #00ff41; padding-bottom:5px;">REGISTRO DE AUDITORIA:</h4>
+            <table class="tabela-relatorio">
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">MANCHETE</th>
+                        <th style="width: 30%;">TIPO DE FRAUDE</th>
+                        <th style="width: 20%;">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-detalhes"></tbody>
+            </table>
+
+            <button onclick="window.location.href='caso3.html'" style="margin-top: 30px; width: 100%; padding: 15px; font-size: 1.1rem; border-color: #ffff00; color: #ffff00;">
+                PRÓXIMA MISSÃO: CASO 03 >>
+            </button>
+        </div>
+    </main>
+
+    <script src="componentes.js"></script>
+    <script src="script.js"></script>
+    <script src="caso2.js"></script>
+</body>
+</html>
