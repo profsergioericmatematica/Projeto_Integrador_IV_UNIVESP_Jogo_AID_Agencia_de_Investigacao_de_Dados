@@ -31,7 +31,7 @@ Grupo do Projeto Integrador IV
 * Vitor Correa Uberti
 
 ## 👨🏻‍🏫 Orientador:
-Renan Patrício
+Professor Renan Patrício
 
 ---
 *Este projeto é um Recurso Educacional Aberto (REA) sob licença MIT.*
