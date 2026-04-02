@@ -16,7 +16,7 @@ Um jogo web gamificado focado no ensino de **Probabilidade e Estatística** para
 * LocalStorage (para salvamento de progresso local).
 
 ## 🚀 Como Executar
-1.  Acesse o link oficial: [https://github.com/profsergioericmatematica/Projeto_Integrador_IV_UNIVESP_Jogo_AID_Agencia_de_Investiga-o_de_Dados/](https://profsergioericmatematica.github.io/Projeto_Integrador_IV_UNIVESP_Jogo_AID_Agencia_de_Investiga-o_de_Dados/)
+1.  Acesse o link oficial: [https://github.com/profsergioericmatematica/Projeto_Integrador_IV_UNIVESP_Jogo_AID_Agencia_de_Investigacao_de_Dados/](https://profsergioericmatematica.github.io/Projeto_Integrador_IV_UNIVESP_Jogo_AID_Agencia_de_Investigacao_de_Dados/)
 2.  Ou baixe este repositório e abra o arquivo `index.html` no seu navegador.
 
 ## 👥 Autores
